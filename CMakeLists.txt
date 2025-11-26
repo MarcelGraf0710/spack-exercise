@@ -5,6 +5,8 @@ project("spackexample" VERSION 0.3.1)
 option(WITH_BOOST "build with filesystem functionality" OFF)
 option(WITH_YAML "build with YAML parser functionality" OFF)
 
+set(SOURCE_FILES main.cpp)
+
 if(WITH_BOOST)
 
   find_package(Boost
@@ -13,13 +15,20 @@ if(WITH_BOOST)
     filesystem
     )
 
-  add_library(spackexamplelib filesystem/filesystem.cpp flatset/flatset.cpp)
+  # add_library(spackexamplelib filesystem/filesystem.cpp flatset/flatset.cpp)
 
-  set_target_properties(spackexamplelib
-  PROPERTIES
-    PUBLIC_HEADER filesystem/filesystem.hpp
-    PUBLIC_HEADER flatset/flatset.hpp
+  list(
+    APPEND
+    SOURCE_FILES
+    filesystem/filesystem.cpp
+    flatset/flatset.cpp
   )
+
+  #set_target_properties(spackexamplelib
+  #PROPERTIES
+  #  PUBLIC_HEADER filesystem/filesystem.hpp
+  #  PUBLIC_HEADER flatset/flatset.hpp
+  #)
 
 endif()
 
@@ -30,40 +39,56 @@ if(WITH_YAML)
   REQUIRED
   )
 
-  add_library(spackexamplelib yamlParser/yamlParser.cpp)
+  #add_library(spackexamplelib yamlParser/yamlParser.cpp)
 
-  set_target_properties(spackexamplelib
-  PROPERTIES
-    PUBLIC_HEADER yamlParser/yamlParser.hpp
+  list(
+    APPEND
+    SOURCE_FILES
+    yamlParser/yamlParser.cpp
   )
-
-  include_directories(${YAML_CPP_INCLUDE_DIR})
   
+
+  #set_target_properties(spackexamplelib
+  #PROPERTIES
+  #  PUBLIC_HEADER yamlParser/yamlParser.hpp
+  #)
+
+  #include_directories(${YAML_CPP_INCLUDE_DIR})
+
 endif()
 
-add_executable(spackexample main.cpp)
+add_executable(spackexample ${SOURCE_FILES})
 
-target_link_libraries(spackexample spackexamplelib)
+#target_link_libraries(spackexample spackexamplelib)
 
 if(WITH_BOOST)
-  target_link_libraries(spackexamplelib Boost::filesystem)
+  target_link_libraries(spackexample Boost::filesystem)
 endif()
 
 if(WITH_YAML)
-  target_link_libraries(spackexamplelib yaml-cpp)
+  target_link_libraries(spackexample yaml-cpp::yaml-cpp)
+  target_include_directories(spackexample PRIVATE ${YAML_CPP_INCLUDE_DIR})
 endif()
 
-target_include_directories(spackexamplelib
-    PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/spackexamplelib
-    PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/spackexamplelib>
-        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/spackexamplelib>
-  )
+#target_include_directories(spackexamplelib
+#    PRIVATE
+#        ${CMAKE_CURRENT_SOURCE_DIR}/spackexamplelib
+#    PUBLIC
+#        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/spackexamplelib>
+#        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/spackexamplelib>
+#  )
 
 # Create install targets
 include(GNUInstallDirs)
-install(TARGETS spackexample spackexamplelib
+#install(TARGETS spackexample spackexamplelib
+#  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/spackexample
+#  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/spackexample
+#  )
+
+install(TARGETS spackexample
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
   ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
