@@ -9,8 +9,6 @@ set(SOURCE_FILES main.cpp)
 
 if(WITH_BOOST)
 
-  target_compile_definitions(spackexample PRIVATE WITH_BOOST)
-
   find_package(Boost
     1.65.1
     REQUIRED
@@ -35,8 +33,6 @@ if(WITH_BOOST)
 endif()
 
 if(WITH_YAML)
-
-  target_compile_definitions(spackexample PRIVATE WITH_YAML)
 
   find_package(yaml-cpp
   0.7.0
@@ -66,10 +62,12 @@ add_executable(spackexample ${SOURCE_FILES})
 #target_link_libraries(spackexample spackexamplelib)
 
 if(WITH_BOOST)
+  target_compile_definitions(spackexample PRIVATE WITH_BOOST)
   target_link_libraries(spackexample Boost::filesystem)
 endif()
 
 if(WITH_YAML)
+  target_compile_definitions(spackexample PRIVATE WITH_YAML)
   target_link_libraries(spackexample yaml-cpp::yaml-cpp)
   target_include_directories(spackexample PRIVATE ${YAML_CPP_INCLUDE_DIR})
 endif()
