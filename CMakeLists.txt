@@ -15,20 +15,12 @@ if(WITH_BOOST)
     filesystem
     )
 
-  # add_library(spackexamplelib filesystem/filesystem.cpp flatset/flatset.cpp)
-
   list(
     APPEND
     SOURCE_FILES
     filesystem/filesystem.cpp
     flatset/flatset.cpp
   )
-
-  #set_target_properties(spackexamplelib
-  #PROPERTIES
-  #  PUBLIC_HEADER filesystem/filesystem.hpp
-  #  PUBLIC_HEADER flatset/flatset.hpp
-  #)
 
 endif()
 
@@ -39,27 +31,15 @@ if(WITH_YAML)
   REQUIRED
   )
 
-  #add_library(spackexamplelib yamlParser/yamlParser.cpp)
-
   list(
     APPEND
     SOURCE_FILES
     yamlParser/yamlParser.cpp
   )
-  
-
-  #set_target_properties(spackexamplelib
-  #PROPERTIES
-  #  PUBLIC_HEADER yamlParser/yamlParser.hpp
-  #)
-
-  #include_directories(${YAML_CPP_INCLUDE_DIR})
 
 endif()
 
 add_executable(spackexample ${SOURCE_FILES})
-
-#target_link_libraries(spackexample spackexamplelib)
 
 if(WITH_BOOST)
   target_compile_definitions(spackexample PRIVATE WITH_BOOST)
@@ -72,23 +52,8 @@ if(WITH_YAML)
   target_include_directories(spackexample PRIVATE ${YAML_CPP_INCLUDE_DIR})
 endif()
 
-#target_include_directories(spackexamplelib
-#    PRIVATE
-#        ${CMAKE_CURRENT_SOURCE_DIR}/spackexamplelib
-#    PUBLIC
-#        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/spackexamplelib>
-#        $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/spackexamplelib>
-#  )
-
 # Create install targets
 include(GNUInstallDirs)
-#install(TARGETS spackexample spackexamplelib
-#  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-#  PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/spackexample
-#  INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/spackexample
-#  )
 
 install(TARGETS spackexample
   LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -96,4 +61,4 @@ install(TARGETS spackexample
   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/spackexample
   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/spackexample
-  )
+)
