@@ -20,7 +20,8 @@ if(WITH_BOOST)
     PUBLIC_HEADER filesystem/filesystem.hpp
     PUBLIC_HEADER flatset/flatset.hpp
   )
-endif
+
+endif()
 
 if(WITH_YAML)
 
@@ -37,7 +38,8 @@ if(WITH_YAML)
   )
 
   include_directories(${YAML_CPP_INCLUDE_DIR})
-endif
+  
+endif()
 
 add_executable(spackexample main.cpp)
 
@@ -45,11 +47,11 @@ target_link_libraries(spackexample spackexamplelib)
 
 if(WITH_BOOST)
   target_link_libraries(spackexamplelib Boost::filesystem)
-endif
+endif()
 
 if(WITH_YAML)
   target_link_libraries(spackexamplelib yaml-cpp)
-endif
+endif()
 
 target_include_directories(spackexamplelib
     PRIVATE
