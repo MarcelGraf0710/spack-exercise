@@ -9,6 +9,8 @@ set(SOURCE_FILES main.cpp)
 
 if(WITH_BOOST)
 
+  target_compile_definitions(spackexample PRIVATE WITH_BOOST)
+
   find_package(Boost
     1.65.1
     REQUIRED
@@ -33,6 +35,8 @@ if(WITH_BOOST)
 endif()
 
 if(WITH_YAML)
+
+  target_compile_definitions(spackexample PRIVATE WITH_YAML)
 
   find_package(yaml-cpp
   0.7.0
